@@ -31,6 +31,6 @@ jobs:
       with:
         #app-name: 'CustomerAdoptionGuide'
         app-name: 'CustomerAdoptionGuideWeb'
-        package: './_site'
+        package: '.'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
         #publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
