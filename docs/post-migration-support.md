@@ -1,8 +1,8 @@
 # Post Migration Support Adoption Guide
 <!--![image][def] 
-![video][def1]-->
+![video][def1]
 <video src="/videos/How%20to%20Scan.mp4" width=400 controls>
-</video>
+</video>-->
 
 ----
 <!--![audio autoplay][def2]-->
