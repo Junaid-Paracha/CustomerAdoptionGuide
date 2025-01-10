@@ -23,15 +23,19 @@ jobs:
 
     - name: Build DocFX site
       run: docfx build 
-    
-    - uses: montudor/action-zip@v1
-      with:
-        args: zip -qq -r dir.zip dir
 
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
+    #- name: Deploy to Azure Web App
+    #  uses: azure/webapps-deploy@v2
+    #  with:
+    #    app-name: 'CustomerAdoptionGuideWeb'
+    #    publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB  }}
+    #    publish_dir: CUSTOMERADOPTIONGUIDE/_site
+    #    force_orphan: true
+      
+    - name: Publish
+      if: github.event_name == 'push'
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        app-name: 'CustomerAdoptionGuideWeb'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB  }}
+        github_token: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB  }}
         publish_dir: CUSTOMERADOPTIONGUIDE/_site
         force_orphan: true
