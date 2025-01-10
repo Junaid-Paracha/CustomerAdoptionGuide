@@ -33,4 +33,5 @@ jobs:
       with:
         app-name: 'CustomerAdoptionGuideWeb'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB  }}
-        package: '.'
+        publish_dir: CUSTOMERADOPTIONGUIDE/_site
+        force_orphan: true
