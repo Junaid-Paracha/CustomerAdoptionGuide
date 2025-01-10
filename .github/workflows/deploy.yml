@@ -23,6 +23,10 @@ jobs:
 
     - name: Build DocFX site
       run: docfx build 
+    
+    - uses: montudor/action-zip@v1
+      with:
+        args: zip -qq -r dir.zip dir
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
