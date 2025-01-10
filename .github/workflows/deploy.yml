@@ -36,6 +36,6 @@ jobs:
       if: github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB  }}
+        github_token: ${{ secrets.GITHUB_TOKEN  }}
         publish_dir: CUSTOMERADOPTIONGUIDE/_site
         force_orphan: true
