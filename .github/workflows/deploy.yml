@@ -34,18 +34,18 @@ jobs:
     #     container: 'docfx-cag-zip'
     #     source: 'site.zip'
 
-    - name: Upload to Azure Storage
-      uses: azure/CLI@v1
-      with:
-        azcliversion: '2.0.72'
-        inlineScript: |
-          az storage blob upload \
-            --account-name devpmssa001 \
-            --container-name docfx-customeradoptionguide-container \
-            --name site.zip \
-            --file site.zip
-      env:
-        AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}  
+    # - name: Upload to Azure Storage
+    #   uses: azure/CLI@v1
+    #   with:
+    #     azcliversion: '2.0.72'
+    #     inlineScript: |
+    #       az storage blob upload \
+    #         --account-name devpmssa001 \
+    #         --container-name docfx-customeradoptionguide-container \
+    #         --name site.zip \
+    #         --file site.zip
+    #   env:
+    #     AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}  
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
