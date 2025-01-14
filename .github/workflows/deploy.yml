@@ -33,8 +33,8 @@ jobs:
         azcliversion: '2.0.72'
         run: |
           az storage blob upload \
-            --account-name 'devpmssa001' \
-            --container-name 'docfx-customeradoptionguide-container' \
+            --account-name devpmssa001 \
+            --container-name docfx-customeradoptionguide-container \
             --name site.zip \
             --file site.zip
       env:
