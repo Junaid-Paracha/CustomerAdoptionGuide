@@ -31,8 +31,9 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'CustomerAdoptionGuideWeb'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        publish_dir: "_site.zip"
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: 'site.zip'
 
 # name: Build and Deploy DocFX Site
 
