@@ -40,8 +40,8 @@ jobs:
         azcliversion: '2.0.72'
         inlineScript: |
           az storage blob upload \
-            --account-name devpmsrgdocfx8a13 \
-            --container-name docfx-cag-zip \
+            --account-name devpmssa001 \
+            --container-name docfx-customeradoptionguide-container \
             --name site.zip \
             --file site.zip
       env:
