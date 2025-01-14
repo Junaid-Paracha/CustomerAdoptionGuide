@@ -1,4 +1,4 @@
-name: Build and Deploy DocFX Site
+name: Deploy to Azure Web App
 
 on:
   push:
@@ -22,19 +22,66 @@ jobs:
       run: dotnet tool install -g docfx
 
     - name: Build DocFX site
-      run: docfx build 
+      run: docfx build
+
+    - name: Zip _site folder
+      run: zip -r site.zip _site
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'CustomerAdoptionGuideWeb'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        publish_dir: "./_site"
+        publish_dir: "_site.zip"
+
+# name: Build and Deploy DocFX Site
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up .NET
+#       uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: '8.0.x'
+
+#     - name: Install DocFX
+#       run: dotnet tool install -g docfx
+
+#     - name: Build DocFX site
+#       run: docfx build 
+
+#     - name: Zip files
+#       run: zip -r ./_site.zip .  
+
+#     - name: Deploy to Azure Web App
+#       uses: azure/webapps-deploy@v2
+#       with:
+#         app-name: 'CustomerAdoptionGuideWeb'
+#         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
+#         publish_dir: "./_site.zip"
       
-    #- name: Publish
-    #  if: github.event_name == 'push'
-    #  uses: peaceiris/actions-gh-pages@v3
-    #  with:
-    #    github_token: ${{ secrets.CUSTOMERADOPTIONGUIDE_GITHUB_TOKEN }}
-    #    publish_dir: CUSTOMERADOPTIONGUIDE/_site
-    #    force_orphan: true
+#     #- name: Publish
+#     #  if: github.event_name == 'push'
+#     #  uses: peaceiris/actions-gh-pages@v3
+#     #  with:
+#     #    github_token: ${{ secrets.CUSTOMERADOPTIONGUIDE_GITHUB_TOKEN }}
+#     #    publish_dir: CUSTOMERADOPTIONGUIDE/_site
+#     #    force_orphan: true
+
+#     # - name: Deploy to Azure Web App
+#     #   id: deploy-to-webapp
+#     #   uses: azure/webapps-deploy@v2
+#     #   with:
+#     #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+#     #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+#     #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
