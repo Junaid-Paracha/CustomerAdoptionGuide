@@ -27,6 +27,19 @@ jobs:
     - name: Zip _site folder
       run: zip -r site.zip _site
 
+    - name: Upload to Azure Storage
+      uses: azure/CLI@v1
+      with:
+        azcliversion: '2.0.72'
+        run: |
+          az storage blob upload \
+            --account-name 'devpmssa001' \
+            --container-name 'docfx-customeradoptionguide-container' \
+            --name site.zip \
+            --file site.zip
+      env:
+        AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}  
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
