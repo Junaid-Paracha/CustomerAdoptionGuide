@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deploy
 
 on:
   push:
@@ -10,35 +10,44 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: choco install docfx
-        run: |
-          choco install docfx -y
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install DocFX
+        run: choco install docfx -y
         env:
           CI: true
-      - name: build documentation
+
+      - name: Build documentation
+        run: docfx build
+
+      - name: Generate build info
         run: |
-          docfx build
-      - name: publish results
+          echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
+
+      - name: Publish results
         uses: actions/upload-artifact@v4
         with:
           name: _site
-          path: CustomerAdoptionGuide/_site/
+          path: _site/
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
           name: _site
           path: _site
-      - name: Deploy
+
+      - name: Deploy to Azure Web App
         id: builddeploy
         uses: azure/webapps-deploy@v4
         with:
           app-name: 'CustomerAdoptionGuideWeb'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-          action: "upload"
+          action: 'upload'
           skip_app_build: true
-          app_location: "_site" 
+          app_location: '_site'
