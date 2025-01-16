@@ -25,7 +25,7 @@ jobs:
       run: docfx build
 
     - name: Zip _site folder
-      run: zip -r site.zip _site
+      run: zip -r site.zip ./_site
 
     # - name: Upload to Azure Blob Storage
     #   uses: github-developer/upload-azure-blob@v1
