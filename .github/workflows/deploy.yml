@@ -21,15 +21,24 @@ jobs:
     - name: Install DocFX
       run: dotnet tool install -g docfx
 
+    - name: Ensure toc.yml exists
+      run: |
+        if [ ! -f "api/toc.yml" ]; then
+          mkdir -p api
+          echo "### YamlMime:TableOfContent" > api/toc.yml
+          echo "- name: API Documentation" >> api/toc.yml
+          echo "  href: index.md" >> api/toc.yml
+
     - name: Build documentation
       run: docfx build
 
     - name: Generate build info
       run: |
-        if (-Not (Test-Path -Path "D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build")) {
+        if [ ! -d "D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build" ]; then
           mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
-        }
+        fi
         echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
+      shell: bash
 
     - name: Publish results
       uses: actions/upload-artifact@v4
