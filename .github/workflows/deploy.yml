@@ -21,6 +21,11 @@ jobs:
       - name: Build documentation
         run: docfx build
 
+      - name: Generate build info
+        run: |
+          mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
+          echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
+
       - name: Verify _site directory
         run: |
           if [ -d "_site" ]; then
