@@ -21,14 +21,6 @@ jobs:
     - name: Install DocFX
       run: dotnet tool install -g docfx
 
-    - name: Ensure toc.yml exists
-      run: |
-        if [ ! -f "api/toc.yml" ]; then
-          mkdir -p api
-          echo "### YamlMime:TableOfContent" > api/toc.yml
-          echo "- name: API Documentation" >> api/toc.yml
-          echo "  href: index.md" >> api/toc.yml
-
     - name: Build documentation
       run: docfx build
 
