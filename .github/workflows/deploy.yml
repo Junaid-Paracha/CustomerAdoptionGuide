@@ -19,24 +19,22 @@ jobs:
       - name: build documentation
         run: |
           docfx build
-      - name: Zip _site folder
-        run: zip -r site.zip ./_site
       - name: publish results
         uses: actions/upload-artifact@v4
         with:
-          name: site.zip
-          path: ./site.zip
+          name: _site
+          path: CustomerAdoptionGuide/_site/
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: site.zip
-          path: ./site.zip
+          name: _site
+          path: _site
       - name: Deploy
         id: builddeploy
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v4
         with:
           app-name: 'CustomerAdoptionGuideWeb'
           slot-name: 'production'
