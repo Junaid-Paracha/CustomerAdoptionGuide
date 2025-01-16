@@ -23,7 +23,9 @@ jobs:
 
       - name: Generate build info
         run: |
-          mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
+          if (-Not (Test-Path -Path "D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build")) {
+            mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
+          }
           echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
 
       - name: Verify _site directory
