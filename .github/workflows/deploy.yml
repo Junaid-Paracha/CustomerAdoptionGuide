@@ -1,51 +1,54 @@
-name: Build and Deploy
+name: Deploy to Azure Web App
 
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
+    branches:
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Install DocFX
-        run: choco install docfx -y
-        env:
-          CI: true
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Build documentation
-        run: docfx build
+    - name: Install DocFX
+      run: dotnet tool install -g docfx
 
-      - name: Generate build info
-        run: |
-          mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
-          echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
+    - name: Build documentation
+      run: docfx build
 
-      - name: Verify _site directory
-        run: |
-          if [ -d "_site" ]; then
-            echo "_site directory exists."
-          else
-            echo "_site directory does not exist."
-            exit 1
-        shell: bash
+    - name: Generate build info
+      run: |
+        mkdir -p D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build
+        echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
 
-      - name: List contents of _site directory
-        run: |
-          echo "Listing contents of _site directory:"
-          ls -la _site
-        shell: bash
+    - name: Verify _site directory
+      run: |
+        if [ -d "_site" ]; then
+          echo "_site directory exists."
+        else
+          echo "_site directory does not exist."
+          exit 1
+      shell: bash
 
-      - name: Publish results
-        uses: actions/upload-artifact@v4
-        with:
-          name: _site
-          path: _site/
+    - name: List contents of _site directory
+      run: |
+        echo "Listing contents of _site directory:"
+        ls -la _site
+      shell: bash
+
+    - name: Publish results
+      uses: actions/upload-artifact@v4
+      with:
+        name: _site
+        path: _site/
 
   deploy:
     runs-on: ubuntu-latest
