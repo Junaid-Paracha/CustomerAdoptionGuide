@@ -28,21 +28,6 @@ jobs:
           }
           echo "Build information" > D:\\a\\CustomerAdoptionGuide\\CustomerAdoptionGuide\\obj\\.cache\\build\\build.info
 
-      - name: Verify _site directory
-        run: |
-          if [ -d "_site" ]; then
-            echo "_site directory exists."
-          else
-            echo "_site directory does not exist."
-            exit 1
-        shell: bash
-
-      - name: List contents of _site directory
-        run: |
-          echo "Listing contents of _site directory:"
-          ls -la _site
-        shell: bash
-
       - name: Publish results
         uses: actions/upload-artifact@v4
         with:
