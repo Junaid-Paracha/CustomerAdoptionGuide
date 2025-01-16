@@ -1,108 +1,44 @@
-name: Deploy to Azure Web App
+name: Build
 
 on:
   push:
-    branches:
-      - main
+    branches: [live]
+  pull_request:
+    branches: [live]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Install DocFX
-      run: dotnet tool install -g docfx
-
-    - name: Build DocFX site
-      run: docfx build
-
-    - name: Zip _site folder
-      run: zip -r site.zip ./_site
-
-    # - name: Upload to Azure Blob Storage
-    #   uses: github-developer/upload-azure-blob@v1
-    #   with:
-    #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-    #     container: 'docfx-cag-zip'
-    #     source: 'site.zip'
-
-    # - name: Upload to Azure Storage
-    #   uses: azure/CLI@v1
-    #   with:
-    #     azcliversion: '2.0.72'
-    #     inlineScript: |
-    #       az storage blob upload \
-    #         --account-name devpmssa001 \
-    #         --container-name docfx-customeradoptionguide-container \
-    #         --name site.zip \
-    #         --file site.zip
-    #   env:
-    #     AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}  
-
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'CustomerAdoptionGuideWeb'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        package: './site.zip'
-
-# name: Build and Deploy DocFX Site
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Set up .NET
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '8.0.x'
-
-#     - name: Install DocFX
-#       run: dotnet tool install -g docfx
-
-#     - name: Build DocFX site
-#       run: docfx build 
-
-#     - name: Zip files
-#       run: zip -r ./_site.zip .  
-
-#     - name: Deploy to Azure Web App
-#       uses: azure/webapps-deploy@v2
-#       with:
-#         app-name: 'CustomerAdoptionGuideWeb'
-#         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-#         publish_dir: "./_site.zip"
-      
-#     #- name: Publish
-#     #  if: github.event_name == 'push'
-#     #  uses: peaceiris/actions-gh-pages@v3
-#     #  with:
-#     #    github_token: ${{ secrets.CUSTOMERADOPTIONGUIDE_GITHUB_TOKEN }}
-#     #    publish_dir: CUSTOMERADOPTIONGUIDE/_site
-#     #    force_orphan: true
-
-#     # - name: Deploy to Azure Web App
-#     #   id: deploy-to-webapp
-#     #   uses: azure/webapps-deploy@v2
-#     #   with:
-#     #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
-#     #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-#     #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      - uses: actions/checkout@v2
+      - name: choco install docfx
+        run: |
+          choco install docfx -y
+        env:
+          CI: true
+      - name: build documentation
+        run: |
+          docfx build
+      - name: publish results
+        uses: actions/upload-artifact@v2
+        with:
+          name: _site
+          path: _site/
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: _site
+          path: _site
+      - name: Deploy
+        id: builddeploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'CustomerAdoptionGuideWeb'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
+          action: "upload"
+          skip_app_build: true
+          app_location: "_site" 
