@@ -33,4 +33,4 @@ jobs:
         app-name: 'CustomerAdoptionGuideWeb'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        package: './site.zip'
+        package: 'site.zip'
