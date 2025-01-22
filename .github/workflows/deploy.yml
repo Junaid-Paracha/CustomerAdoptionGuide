@@ -35,5 +35,4 @@ jobs:
         app-name: 'CustomerAdoptionGuideWeb'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        echo "Current dir: $(pwd)"
-        package: '$(pwd)/site.zip'
+        package: 'CustomerAdoptionGuide/site.zip'
