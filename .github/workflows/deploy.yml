@@ -25,7 +25,9 @@ jobs:
       run: docfx build
 
     - name: Zip _site folder
-      run: zip -r site.zip ./_site
+      run: |
+        zip -r site.zip ./_site
+        echo "Zip file location: $(pwd)/site.zip"
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
