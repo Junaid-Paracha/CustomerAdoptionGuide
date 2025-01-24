@@ -24,10 +24,10 @@ jobs:
     - name: Build DocFX site
       run: docfx build
 
-    - name: Zip _site folder
-      run: |
-        zip -r site.zip ./_site
-        echo "Zip file location: $(pwd)/site.zip"
+    # - name: Zip _site folder
+    #   run: |
+    #     zip -r site.zip ./_site
+    #     echo "Zip file location: $(pwd)/site.zip"
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -35,4 +35,4 @@ jobs:
         app-name: 'CustomerAdoptionGuideWeb'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        package: './site.zip'
+        package: './_site'
