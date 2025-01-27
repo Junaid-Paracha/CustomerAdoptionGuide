@@ -21,7 +21,7 @@ jobs:
 
     - name: Run docfx
       run: |
-        docfx CUSTOMERADOPTIONGUIDE/docfx.json
+        docfx ./docfx.json
         if [ $? -ne 0 ]; then
           echo "docfx build failed with exit code $?."
           exit 1
@@ -29,14 +29,14 @@ jobs:
 
     - name: Packing Documentation Web Site
       run: |
-        zip -r ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/site.zip ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/_site
+        zip -r ${{ github.workspace }}/site.zip ${{ github.workspace }}/_site
 
     - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
       with:
         app-name: DocumentationTestApp1
         slot-name: production
-        package: ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/site.zip
+        package: ${{ github.workspace }}/site.zip
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
 # name: Deploy to Azure Web App
 
