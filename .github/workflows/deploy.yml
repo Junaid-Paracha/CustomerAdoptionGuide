@@ -37,7 +37,8 @@ jobs:
         app-name: CAGtest
         slot-name: production
         package: ./_site
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CAGtest }}
+        # publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CAGtest }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
 
 # name: Deploy to Azure Web App
 
