@@ -34,48 +34,7 @@ jobs:
     - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
       with:
-        # app-name: CAGtest
-        app-name: CustomerAdoptionGuideWeb
+        app-name: CAGtest
         slot-name: production
         package: ./_site
-        # publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CAGtest }}
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-
-# name: Deploy to Azure Web App
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Set up .NET
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '8.0.x'
-
-#     - name: Install DocFX
-#       run: dotnet tool install -g docfx
-
-#     - name: Build DocFX site
-#       run: docfx build
-
-#     # - name: Zip _site folder
-#     #   run: |
-#     #     zip -r site.zip ./_site
-#     #     echo "Zip file location: $(pwd)/site.zip"
-
-#     - name: Deploy to Azure Web App
-#       uses: azure/webapps-deploy@v2
-#       with:
-#         app-name: 'CustomerAdoptionGuideWeb'
-#         slot-name: 'production'
-#         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-#         package: './_site'
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_CAGtest }}
