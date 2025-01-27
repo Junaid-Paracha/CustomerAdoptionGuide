@@ -10,29 +10,69 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '8.0.x'
+    - name: Authenticate Azure DevOps NuGet feed
+      uses: NuGet/setup-nuget@v1
 
-    - name: Install DocFX
-      run: dotnet tool install -g docfx
+    - name: Install docfx
+      run: dotnet tool update -g docfx
 
-    - name: Build DocFX site
-      run: docfx build
+    - name: Run docfx
+      run: |
+        docfx CUSTOMERADOPTIONGUIDE/docfx.json
+        if [ $? -ne 0 ]; then
+          echo "docfx build failed with exit code $?."
+          exit 1
+        fi
 
-    # - name: Zip _site folder
-    #   run: |
-    #     zip -r site.zip ./_site
-    #     echo "Zip file location: $(pwd)/site.zip"
+    - name: Packing Documentation Web Site
+      run: |
+        zip -r ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/site.zip ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/_site
 
-    - name: Deploy to Azure Web App
+    - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'CustomerAdoptionGuideWeb'
-        slot-name: 'production'
+        app-name: DocumentationTestApp1
+        slot-name: production
+        package: ${{ github.workspace }}/CUSTOMERADOPTIONGUIDE/site.zip
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
-        package: './_site'
+# name: Deploy to Azure Web App
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+
+#     - name: Set up .NET
+#       uses: actions/setup-dotnet@v1
+#       with:
+#         dotnet-version: '8.0.x'
+
+#     - name: Install DocFX
+#       run: dotnet tool install -g docfx
+
+#     - name: Build DocFX site
+#       run: docfx build
+
+#     # - name: Zip _site folder
+#     #   run: |
+#     #     zip -r site.zip ./_site
+#     #     echo "Zip file location: $(pwd)/site.zip"
+
+#     - name: Deploy to Azure Web App
+#       uses: azure/webapps-deploy@v2
+#       with:
+#         app-name: 'CustomerAdoptionGuideWeb'
+#         slot-name: 'production'
+#         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_WEB }}
+#         package: './_site'
