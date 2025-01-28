@@ -26,6 +26,13 @@ jobs:
           echo "docfx build failed with exit code $?."
           exit 1
         fi
+
+    - name: Upload artifact to Azure Storage
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az storage blob upload-batch -d '$web' -s ./_site --account-name devpmssa001 --account-key ${{ secrets.AZURE_STORAGE_KEY }}
+          
     - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
       with:
