@@ -26,11 +26,6 @@ jobs:
           echo "docfx build failed with exit code $?."
           exit 1
         fi
-
-    # - name: Packing Documentation Web Site
-    #   run: |
-    #     zip -r ${{ github.workspace }}/site.zip ${{ github.workspace }}/_site
-
     - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
       with:
