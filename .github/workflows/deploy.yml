@@ -31,7 +31,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-          az storage blob upload-batch -d '$web' -s ./_site --account-name cagstorageaccount --account-key ${{ secrets.AZURE_STORAGE_KEY }}
+          az storage blob upload-batch -d 'content' -s ./_site --account-name cagstorageaccount --account-key ${{ secrets.AZURE_STORAGE_KEY }}
           
     - name: Azure App Service Deploy - Documentation website
       uses: azure/webapps-deploy@v2
