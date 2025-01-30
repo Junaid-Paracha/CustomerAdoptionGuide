@@ -2,7 +2,7 @@
 _layout: landing
 ---
 
-# This is the **HOMEPAGE**.
+# This is the **HOMEPAGE** Running from a storage account .
 
 Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
 
